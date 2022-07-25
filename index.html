@@ -381,27 +381,27 @@ function Line_Algorithm(Item){
 	text += SimpleD2T([["x","y"],[Item.x1,Item.y1],[Item.x2,Item.y2]],"Data");
 	let pixelData=[["x","y"]];
 	
-	let dx=(Item.x2-Item.x1),dy=(Item.y2-Item.y1);
+	let DeltaX=(Item.x2-Item.x1),DeltaY=(Item.y2-Item.y1);
 	let x1=Item.x1,y1=Item.y1;
 	pixelData.push([x1.toFixed(0),y1.toFixed(0)]);
 	let Steps
-	if (Math.abs(dx) >= Math.abs(dy)){
-		Steps = Math.abs(dx);
+	if (Math.abs(DeltaX) >= Math.abs(DeltaY)){
+		Steps = Math.abs(DeltaX);
 	}else{
-		Steps = Math.abs(dy);
+		Steps = Math.abs(DeltaY);
 	}
-  let Xincrement = (dx / Steps), Yincrement = (dy / Steps);
-  //console.log("Xincrement = "+Xincrement+"  Yincrement = "+Yincrement+"  Steps = "+Steps);
-  text+="Xincrement = "+Xincrement+"  Yincrement = "+Yincrement+"  Steps = "+Steps;
+  let dx = (DeltaX / Steps), dy = (DeltaY / Steps);
+  //console.log("dx = "+dx+"  dy = "+dy+"  Steps = "+Steps);
+  text+="dx = "+dx+"  dy = "+dy+"  Steps = "+Steps;
 	for (let i=0; i<Steps; i++)
 	{
-		x1 = Number(x1) + Number(Xincrement); 
-		y1 = Number(y1) + Number(Yincrement);
+		x1 = Number(x1) + Number(dx); 
+		y1 = Number(y1) + Number(dy);
 		pixelData.push([x1.toFixed(0),y1.toFixed(0)]);
 		//putpixel(Round(X1), Round(Y1), ColorName);
 	}
 	text+= SimpleD2T(pixelData,"pixelData");
-	console.log(pixelData);
+	//console.log(pixelData);
 	sidh("output",text);
 }
 </script>
