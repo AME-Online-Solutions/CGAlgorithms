@@ -353,7 +353,7 @@ function Load_ItemData(ProbNo){
 function Load_ItemsList(){
 	let Prob=[],text='',ItemsListData=[];
 	text='Algorithms<br>';
-	Prob[0]={algo:"Line",x1:0,y1:0,x2:5,y2:2};
+	Prob[0]={algo:"DDA Line",x1:0,y1:0,x2:5,y2:2};
 	for(let i=0;i<Prob.length;i++){
 		text +='<button name="Item" value="'+i+'" class="button" >'+Prob[i].algo+'</button><br>';
 		ItemsListData.push(Prob[i])
@@ -374,35 +374,38 @@ function Process_Data(){
 	let Item=JSON.parse(gidh("ItemData"));
 	var fnname=Item.algo.replace(/[()-.'\/ \&]/g,"_");
 	var output= eval(fnname+"_Algorithm(Item)");
+	let fnstr=window[fnname+"_Algorithm"].toString().replace(/</g,"&#60;").replace(/\{ /g,"{<br>").replace(/\; /g,";<br>");
+	console.log(fnstr);
+	var fnstrp = fnstr.substring(fnstr.lastIndexOf("//**//") + 6, fnstr.lastIndexOf("//***//"));
+	output+="<br>"+"<div align=left>"+fnstrp+"</div>";
+	sidh("output",output);
 }
-function Line_Algorithm(Item){
-	//alert(JSON.stringify(Item));
+function DDA_Line_Algorithm(Item){ 
 	let text="";
 	text += SimpleD2T([["x","y"],[Item.x1,Item.y1],[Item.x2,Item.y2]],"Data");
-	let pixelData=[["x","y"]];
-	
-	let DeltaX=(Item.x2-Item.x1),DeltaY=(Item.y2-Item.y1);
-	let x1=Item.x1,y1=Item.y1;
-	pixelData.push([x1.toFixed(0),y1.toFixed(0)]);
-	let Steps
-	if (Math.abs(DeltaX) >= Math.abs(DeltaY)){
-		Steps = Math.abs(DeltaX);
-	}else{
-		Steps = Math.abs(DeltaY);
-	}
-  let dx = (DeltaX / Steps), dy = (DeltaY / Steps);
-  //console.log("dx = "+dx+"  dy = "+dy+"  Steps = "+Steps);
-  text+="dx = "+dx+"  dy = "+dy+"  Steps = "+Steps;
-	for (let i=0; i<Steps; i++)
-	{
+	let x1=Item.x1,y1=Item.y1,x2=Item.x2,y2=Item.y2;
+	//**//
+	let pixelData=[["x","y"]]; 
+	let DeltaX=(x2-x1),DeltaY=(y2-y1); 
+	pixelData.push([x1.toFixed(0),y1.toFixed(0)]); 
+	let Steps; 
+	if (Math.abs(DeltaX) >= Math.abs(DeltaY)){ 
+		Steps = Math.abs(DeltaX); 
+	}else{ 
+		Steps = Math.abs(DeltaY); 
+	}; 
+  let dx = (DeltaX / Steps), dy = (DeltaY / Steps); 
+	for (let i=0;i<Steps;i++){ 
 		x1 = Number(x1) + Number(dx); 
-		y1 = Number(y1) + Number(dy);
-		pixelData.push([x1.toFixed(0),y1.toFixed(0)]);
-		//putpixel(Round(X1), Round(Y1), ColorName);
+		y1 = Number(y1) + Number(dy); 
+		pixelData.push([x1.toFixed(0),y1.toFixed(0)]); 
 	}
+  //***//
+  //console.log("dx = "+dx+"  dy = "+dy+"  Steps = "+Steps); 
+  text+="dx = "+dx+"  dy = "+dy+"  Steps = "+Steps;
 	text+= SimpleD2T(pixelData,"pixelData");
-	//console.log(pixelData);
-	sidh("output",text);
+	//sidh("output",text);
+	return text
 }
 </script>
 </head>
